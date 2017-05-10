@@ -44,8 +44,12 @@ local function filter_rules(sid, plugin, ngx_var, ngx_var_uri, ngx_var_host)
                     else 
                         ngx_var.upstream_host = handle_util.build_upstream_host(extractor_type, rule.upstream_host, variables, plugin)
                     end
-
                     ngx_var.upstream_url = handle_util.build_upstream_url(extractor_type, rule.upstream_url, variables, plugin)
+					-- 避免URL上的参数被擦除
+					local reqMethod = ngx.req.get_method()
+                    if reqMethod == "GET" or reqMethod == "POST" then
+                       ngx_var.upstream_url = ngx_var.upstream_url .. "?" .. ngx.encode_args(ngx.req.get_uri_args())
+                    end
                     ngx.log(ngx.INFO, "[Divide-Match-Rule:upstream] ", rule.name, " extractor_type:", extractor_type,
                         " upstream_host:", ngx_var.upstream_host, " upstream_url:", ngx_var.upstream_url)
                 else

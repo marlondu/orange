@@ -51,7 +51,6 @@ local function filter_rules(sid, plugin, ngx_var, ngx_var_uri, ngx_var_host)
                 else
                     ngx.log(ngx.INFO, "[Divide-Match-Rule:error] no upstream host or url. ", rule.name, " host:", ngx_var_host, " uri:", ngx_var_uri)
                 end
-
                 return true
             else
                 if rule.log == true then

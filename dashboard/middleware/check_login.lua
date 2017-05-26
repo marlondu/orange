@@ -4,7 +4,7 @@ local sfind = string.find
 local function is_login(req)
     local user
     if req.session then
-        user =  req.session.get("user") 
+        user =  req.session.get("user")
         if user and user.username and user.userid then  
             return true, user
         end

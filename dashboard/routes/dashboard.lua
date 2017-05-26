@@ -5,7 +5,7 @@ local xpcall = xpcall
 local string_lower = string.lower
 local lor = require("lor.index")
 
-
+-- store 是 require('orange.store.mysql_store')对象
 local function load_plugin_api(plugin, dashboard_router, store)
     local plugin_api_path = "orange.plugins." .. plugin .. ".api"
     ngx.log(ngx.ERR, "[plugin's api load], plugin_api_path:", plugin_api_path)
@@ -52,7 +52,7 @@ return function(config, store)
         local data = {}
         local plugins = config.plugins
         data.plugins = plugins
-
+        ngx.log(ngx.INFO, "[data.plugins-1:]",plugins[1])
         local plugin_configs = {}
         for i, v in ipairs(plugins) do
             local tmp
@@ -65,6 +65,7 @@ return function(config, store)
                     active_rule_count = 0,
                     inactive_rule_count = 0
                 }
+                ngx.log(ngx.ERR, "[---- load_plugin ----: ]", v)
                 local plugin_selectors = orange_db.get_json(v .. ".selectors")
                 if plugin_selectors then
                     for sid, s in pairs(plugin_selectors) do
@@ -98,7 +99,6 @@ return function(config, store)
             plugin_configs[v] = tmp
         end
         data.plugin_configs = plugin_configs
-
         res:render("index", data)
     end)
 
@@ -107,6 +107,7 @@ return function(config, store)
     end)
 
     dashboard_router:get("/monitor", function(req, res, next)
+        ngx.log(ngx.INFO, "[----debug-monitor-data----]:", tostring(res))
         res:render("monitor")
     end)
 
@@ -159,6 +160,10 @@ return function(config, store)
 
     dashboard_router:get("/help", function(req, res, next)
         res:render("help")
+    end)
+    -- added 2017-05-19
+    dashboard_router:get("/upstream", function(req, res, next)
+        res:render("upstream")
     end)
 
     --- 加载其他"可用"插件API

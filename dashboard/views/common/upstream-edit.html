@@ -1,0 +1,40 @@
+<script id="edit-selector-tpl" type="application/template">
+    <div id="selector-edit-area">
+        <form id="edit-rule-form" class="form-horizontal">
+            <div class="form-group">
+                <label for="input-name" class="col-sm-1 control-label">名称</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="selector-name" value="${s.name}" placeholder="名称">
+                </div>
+            </div><!-- name -->
+
+            <div class="form-group">
+                <label for="input-name" class="col-sm-1 control-label">策略</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="selector-strategy" value="${s.strategy}" placeholder="策略">
+                </div>
+            </div><!-- strategy -->
+
+             <div class="form-group">
+                <label class="col-sm-1 control-label">处理</label>
+                <div class="col-sm-3" style="padding-left:10;">
+                    <select class="form-control" id="selector-log">
+                        <option {@if s.handle.log == false } selected {@/if} value="false" selected>不记录日志</option>
+                        <option {@if s.handle.log == true } selected {@/if} value="true">记录日志</option>
+                    </select>
+                </div>
+            </div><!-- handle log-->
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-11">
+                    <div class="checkbox">
+                        <label>
+                            <input {@if s.enable==true} checked {@/if} type="checkbox" id="selector-enable"> 启用
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</script>

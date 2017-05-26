@@ -1,0 +1,77 @@
+<div id="judge-area">
+	<div class="form-group">
+		<label for="input-host" class="col-sm-2 control-label">Host</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.host}"class="form-control" id="rule-host" placeholder="Host">
+        </div>
+	</div>
+	<div class="form-group">
+		<label for="input-weight" class="col-sm-2 control-label">weight</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.weight}" class="form-control" id="rule-weight" placeholder="weight">
+        </div>
+	</div>
+	<div class="form-group">
+		<label for="input-max_conns" class="col-sm-2 control-label">max_conns</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.max_conns}" class="form-control" id="rule-max_conns" placeholder="max_conns">
+        </div>
+	</div>
+	<div class="form-group">
+		<label for="input-max_fails" class="col-sm-2 control-label">max_fails</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.max_fails}" class="form-control" id="rule-max_fails" placeholder="max_fails">
+        </div>
+	</div>
+	<div class="form-group">
+		<label for="input-fail_timeout" class="col-sm-2 control-label">fail_timeout</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.fail_timeout}" class="form-control" id="rule-fail_timeout" placeholder="fail_timeout">
+        </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-11">
+	        <div class="checkbox">
+	            <label>
+	                <input {@if r.backup==true} checked {@/if} type="checkbox" id="rule-backup"> backup
+	            </label>
+	        </div>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-11">
+	        <div class="checkbox">
+	            <label>
+	                <input {@if r.down == true} checked {@/if} type="checkbox" id="rule-down"> down
+	            </label>
+	        </div>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-11">
+	        <div class="checkbox">
+	            <label>
+	                <input {@if r.resolve==true} checked {@/if} type="checkbox" id="rule-resolve"> resolve
+	            </label>
+	        </div>
+	    </div>
+	</div>
+	<div class="form-group">
+		<label for="input-route" class="col-sm-2 control-label">route</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.route}" class="form-control" id="rule-route" placeholder="route">
+        </div>
+	</div>
+	<div class="form-group">
+		<label for="input-service" class="col-sm-2 control-label">service</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.service}" class="form-control" id="rule-service" placeholder="service">
+        </div>
+	</div>
+	<div class="form-group">
+		<label for="input-slow_start" class="col-sm-2 control-label">slow_start</label>
+        <div class="col-sm-10">
+            <input type="text" value="${r.service}" class="form-control" id="rule-slow_start" placeholder="slow_start">
+        </div>
+	</div>
+</div>

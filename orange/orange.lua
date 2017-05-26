@@ -7,6 +7,7 @@ require("orange.lib.globalpatches")()
 local utils = require("orange.utils.utils")
 local config_loader = require("orange.utils.config_loader")
 local dao = require("orange.store.dao")
+local upstream = require("dashboard.routes.upstream")
 
 local HEADERS = {
     PROXY_LATENCY = "X-Orange-Proxy-Latency",
@@ -39,7 +40,6 @@ local function load_node_plugins(config, store)
         local priority_b = b.handler.PRIORITY or 0
         return priority_a > priority_b
     end)
-
     return sorted_plugins
 end
 
@@ -78,7 +78,7 @@ function Orange.init(options)
         store = store,
         config = config
     }
-
+    -- 目前orange_data还没有初始化
     return config, store
 end
 
@@ -92,9 +92,15 @@ function Orange.init_worker()
             local ok, err = ngx.timer.at(0, function(premature, store, config)
                 local available_plugins = config.plugins
                 for _, v in ipairs(available_plugins) do
+                    -- 此处初始化数据，将数据从mysql读出并写入orange_db中
+                    -- 
                     local load_success = dao.load_data_by_mysql(store, v)
                     if not load_success then
                         os.exit(1)
+                    end
+                    if load_success and v == "upstream" then
+                        ngx.log(ngx.ERR, "-------init worker --------------------------------: ", v)
+                        upstream.init_upstreams()
                     end
                 end
             end, Orange.data.store, Orange.data.config)

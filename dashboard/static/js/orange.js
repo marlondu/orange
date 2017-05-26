@@ -3,7 +3,10 @@
     L.Common = L.Common || {};
     _this = L.Common = {
         data: {},
-
+        dialogTitle: {
+            selector: "选择器",
+            rule: "规则"
+        },
         init: function () {
 
         },
@@ -662,17 +665,17 @@
         initRuleAddDialog: function (type, context) {
             var op_type = type;
             var rules_key = "rules";
-
-
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $("#add-btn").click(function () {
                 var selector_id = $("#add-btn").attr("data-id");
                 if(!selector_id){
-                    L.Common.showErrorTip("错误提示", "添加规则前请先选择【选择器】!");
+                    L.Common.showErrorTip("错误提示", "添加"+dialogTitle.rule+"前请先选择【"+dialogTitle.selector+"】!");
                     return;
                 }
-                var content = $("#add-tpl").html()
+                var content = $("#add-tpl").html();
+                
                 var d = dialog({
-                    title: '添加规则',
+                    title: '添加' + dialogTitle.rule,
                     width: 720,
                     content: content,
                     modal: true,
@@ -706,12 +709,12 @@
                                             _this.refreshConfigs(op_type, context);
                                             return true;
                                         } else {
-                                            L.Common.showErrorTip("提示", result.msg || "添加规则发生错误");
+                                            L.Common.showErrorTip("提示", result.msg || "添加"+dialogTitle.rule+"发生错误");
                                             return false;
                                         }
                                     },
                                     error: function () {
-                                        L.Common.showErrorTip("提示", "添加规则请求发生异常");
+                                        L.Common.showErrorTip("提示", "添加"+dialogTitle.rule+"请求发生异常");
                                         return false;
                                     }
                                 });
@@ -798,7 +801,7 @@
 
         initRuleEditDialog: function (type, context) {
             var op_type = type;
-
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", ".edit-btn", function () {
                 var selector_id = $("#add-btn").attr("data-id");
 
@@ -823,7 +826,7 @@
                 });
 
                 var d = dialog({
-                    title: "编辑规则",
+                    title: "编辑" + dialogTitle.rule,
                     width: 680,
                     content: html,
                     modal: true,
@@ -858,12 +861,12 @@
                                             _this.loadRules(op_type, context, selector_id);
                                             return true;
                                         } else {
-                                            L.Common.showErrorTip("提示", result.msg || "编辑规则发生错误");
+                                            L.Common.showErrorTip("提示", result.msg || "编辑"+dialogTitle.rule+"发生错误");
                                             return false;
                                         }
                                     },
                                     error: function () {
-                                        L.Common.showErrorTip("提示", "编辑规则请求发生异常");
+                                        L.Common.showErrorTip("提示", "编辑"+dialogTitle.rule+"请求发生异常");
                                         return false;
                                     }
                                 });
@@ -886,7 +889,7 @@
 
         initRuleDeleteDialog: function (type, context) {
             var op_type = type;
-
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", ".delete-btn", function () {
                 var name = $(this).attr("data-name");
                 var rule_id = $(this).attr("data-id");
@@ -895,7 +898,7 @@
                 var d = dialog({
                     title: '提示',
                     width: 480,
-                    content: "确定要删除规则【" + name + "】吗？",
+                    content: "确定要删除"+dialogTitle.rule+"【" + name + "】吗？",
                     modal: true,
                     button: [{
                         value: '取消'
@@ -917,12 +920,12 @@
                                         _this.refreshConfigs(op_type, context);//刷新本地缓存
                                         return true;
                                     } else {
-                                        L.Common.showErrorTip("提示", result.msg || "删除规则发生错误");
+                                        L.Common.showErrorTip("提示", result.msg || "删除"+dialogTitle.rule+"发生错误");
                                         return false;
                                     }
                                 },
                                 error: function () {
-                                    L.Common.showErrorTip("提示", "删除规则请求发生异常");
+                                    L.Common.showErrorTip("提示", "删除"+dialogTitle.rule+"请求发生异常");
                                     return false;
                                 }
                             });
@@ -936,6 +939,7 @@
 
         initRuleSortEvent: function (type, context){
             var op_type = type;
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", "#rule-sort-btn", function () {
                 var new_order = [];
                 if($("#rules li")){
@@ -946,19 +950,19 @@
 
                 var new_order_str = new_order.join(",");
                 if(!new_order_str||new_order_str==""){
-                    L.Common.showErrorTip("提示", "规则列表为空， 无需排序");
+                    L.Common.showErrorTip("提示", dialogTitle.rule + "列表为空， 无需排序");
                     return;
                 }
 
                 var selector_id = $("#add-btn").attr("data-id");
                 if(!selector_id || selector_id==""){
-                    L.Common.showErrorTip("提示", "操作异常， 未选中选择器， 无法排序");
+                    L.Common.showErrorTip("提示", "操作异常， 未选中"+dialogTitle.selector+"， 无法排序");
                     return;
                 }
 
                 var d = dialog({
                     title: "提示",
-                    content: "确定要保存新的规则顺序吗？",
+                    content: "确定要保存新的"+dialogTitle.rule+"顺序吗？",
                     width: 350,
                     modal: true,
                     cancel: function(){},
@@ -995,6 +999,7 @@
 
         initSelectorAddDialog: function (type, context) {
             var op_type = type;
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $("#add-selector-btn").click(function () {
                 var current_selected_id;
                 var current_selected_selector = $("#selector-list li.selected-selector");
@@ -1002,9 +1007,10 @@
                     current_selected_id = $(current_selected_selector[0]).attr("data-id");
                 }
 
-                var content = $("#add-selector-tpl").html()
+                var content = $("#add-selector-tpl").html();
+                //var title = context.dialogTitle.selector || this.dialogTitle.selector;
                 var d = dialog({
-                    title: '添加选择器',
+                    title: '添加' + dialogTitle.selector,
                     width: 720,
                     content: content,
                     modal: true,
@@ -1032,12 +1038,12 @@
                                             });
                                             return true;
                                         } else {
-                                            L.Common.showErrorTip("提示", result.msg || "添加选择器发生错误");
+                                            L.Common.showErrorTip("提示", result.msg || "添加"+dialogTitle.selector+"发生错误");
                                             return false;
                                         }
                                     },
                                     error: function () {
-                                        L.Common.showErrorTip("提示", "添加选择器请求发生异常");
+                                        L.Common.showErrorTip("提示", "添加"+dialogTitle.selector+"请求发生异常");
                                         return false;
                                     }
                                 });
@@ -1057,12 +1063,13 @@
 
         initSelectorDeleteDialog: function (type, context) {
             var op_type = type;
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", ".delete-selector-btn", function (e) {
                 e.stopPropagation();// 阻止冒泡
                 var name = $(this).attr("data-name");
                 var selector_id = $(this).attr("data-id");
                 if(!selector_id){
-                    L.Common.showErrorTip("提示", "参数错误，要删除的选择器不存在！");
+                    L.Common.showErrorTip("提示", "参数错误，要删除的"+dialogTitle.selector+"不存在！");
                     return;
                 }
 
@@ -1075,7 +1082,7 @@
                 var d = dialog({
                     title: '提示',
                     width: 480,
-                    content: "确定要删除选择器【" + name + "】吗? 删除选择器将同时删除它的所有规则!",
+                    content: "确定要删除"+dialogTitle.selector+"【" + name + "】吗? 删除"+dialogTitle.selector+"将同时删除它的所有"+dialogTitle.rule+"!",
                     modal: true,
                     button: [{
                         value: '取消'
@@ -1113,12 +1120,12 @@
 
                                         return true;
                                     } else {
-                                        L.Common.showErrorTip("提示", result.msg || "删除选择器发生错误");
+                                        L.Common.showErrorTip("提示", result.msg || "删除"+dialogTitle.selector+"发生错误");
                                         return false;
                                     }
                                 },
                                 error: function () {
-                                    L.Common.showErrorTip("提示", "删除选择器请求发生异常");
+                                    L.Common.showErrorTip("提示", "删除"+dialogTitle.selector+"请求发生异常");
                                     return false;
                                 }
                             });
@@ -1133,7 +1140,7 @@
 
         initSelectorEditDialog: function(type, context){
             var op_type = type;
-
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", ".edit-selector-btn", function (e) {
                 e.stopPropagation();// 阻止冒泡
                 var tpl = $("#edit-selector-tpl").html();
@@ -1141,7 +1148,7 @@
                 var selectors = context.data.selectors;
                 selector = selectors[selector_id];
                 if (!selector_id || !selector) {
-                    L.Common.showErrorTip("提示", "要编辑的选择器不存在或者查找出错");
+                    L.Common.showErrorTip("提示", "要编辑的"+dialogTitle.selector+"不存在或者查找出错");
                     return;
                 }
 
@@ -1150,7 +1157,7 @@
                 });
 
                 var d = dialog({
-                    title: "编辑选择器",
+                    title: "编辑" + dialogTitle.selector,
                     width: 680,
                     content: html,
                     modal: true,
@@ -1186,12 +1193,12 @@
                                             _this.loadConfigs(op_type, context);
                                             return true;
                                         } else {
-                                            L.Common.showErrorTip("提示", result.msg || "编辑选择器发生错误");
+                                            L.Common.showErrorTip("提示", result.msg || "编辑"+dialogTitle.selector+"发生错误");
                                             return false;
                                         }
                                     },
                                     error: function () {
-                                        L.Common.showErrorTip("提示", "编辑选择器请求发生异常");
+                                        L.Common.showErrorTip("提示", "编辑"+dialogTitle.selector+"请求发生异常");
                                         return false;
                                     }
                                 });
@@ -1213,6 +1220,7 @@
 
         initSelectorSortEvent: function (type, context){
             var op_type = type;
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", "#selector-sort-btn", function () {
                 var new_order = [];
                 if($("#selector-list li")){
@@ -1223,7 +1231,7 @@
 
                 var new_order_str = new_order.join(",");
                 if(!new_order_str||new_order_str==""){
-                    L.Common.showErrorTip("提示", "选择器列表为空， 无需排序");
+                    L.Common.showErrorTip("提示", dialogTitle.selector + "列表为空， 无需排序");
                     return;
                 }
 
@@ -1235,7 +1243,7 @@
 
                 var d = dialog({
                     title: "提示",
-                    content: "确定要保存新的选择器顺序吗？",
+                    content: "确定要保存新的"+dialogTitle.selector+"顺序吗？",
                     width: 350,
                     modal: true,
                     cancel: function(){},
@@ -1276,12 +1284,13 @@
 
         initSelectorClickEvent: function (type, context){
             var op_type = type;
+            var dialogTitle = context.dialogTitle || _this.dialogTitle;
             $(document).on("click", ".selector-item", function () {
                 var self = $(this);
                 var selector_id = self.attr("data-id");
                 var selector_name = self.attr("data-name");
                 if(selector_name){
-                    $("#rules-section-header").text("选择器【" + selector_name + "】规则列表");
+                    $("#rules-section-header").text(dialogTitle.selector+"【" + selector_name + "】"+dialogTitle.rule+"列表");
                 }
 
                 $(".selector-item").each(function(){
@@ -1333,7 +1342,7 @@
                         context.data.enable = enable;
                         context.data.meta = meta;
                         context.data.selectors = selectors;
-
+                        // 
                         _this.renderSelectors(meta, selectors);
 
                         if(page_load){//第一次加载页面

@@ -143,6 +143,17 @@ function _M.table_contains(arr, val)
     return false
 end
 
+function _M.table_contains_key(tb, key)
+    if type(tb) == "table" then
+        for k,v in ipairs(tb) do
+            if k == key then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 --- Checks if a table is an array and not an associative array.
 -- *** NOTE *** string-keys containing integers are considered valid array entries!
 -- @param t The table to check
@@ -183,6 +194,7 @@ end
 -- @return module The retrieved module.
 function _M.load_module_if_exists(module_name)
     local status, res = pcall(require, module_name)
+    --ngx.log(ngx.ERR, "[module name ]", module_name,"[status:]", status, "[res:]", res)
     if status then
         return true, res
         -- Here we match any character because if a module has a dash '-' in its name, we would need to escape it.

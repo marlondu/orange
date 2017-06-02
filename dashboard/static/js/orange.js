@@ -1020,7 +1020,8 @@
                         value: '确定',
                         autofocus: false,
                         callback: function () {
-                            var result = _this.buildSelector();
+                            var buildSelector = context.buildSelector || _this.buildSelector;
+                            var result = buildSelector();
                             console.log(result);
                             if (result.success) {
                                 $.ajax({
@@ -1167,7 +1168,8 @@
                         value: '预览',
                         autofocus: false,
                         callback: function () {
-                            var s = _this.buildSelector();
+                            var buildSelector = context.buildSelector || _this.buildSelector;
+                            var s = buildSelector();
                             L.Common.showRulePreview(s);
                             return false;
                         }
@@ -1175,7 +1177,8 @@
                         value: '保存修改',
                         autofocus: false,
                         callback: function () {
-                            var result = _this.buildSelector();
+                            var buildSelector = context.buildSelector || _this.buildSelector
+                            var result = buildSelector();
                             result.data.id = selector.id;//拼上要修改的id
                             result.data.rules = selector.rules;//拼上已有的rules
 

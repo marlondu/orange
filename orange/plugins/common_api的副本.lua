@@ -7,6 +7,7 @@ local orange_db = require("orange.store.orange_db")
 local utils = require("orange.utils.utils")
 local stringy = require("orange.utils.stringy")
 local dao = require("orange.store.dao")
+local upstream = require("dashboard.routes.upstream")
 
 -- build common apis
 return function(plugin)
@@ -195,6 +196,17 @@ return function(plugin)
                     })
                 end
 
+                -- 此时orange_db中的数据已经是最新的了, 新建upstream
+                if plugin == "upstream" then
+                    local update_nginx_server_result = upstream.update_upstream(selector_id, "update")
+                    if not update_nginx_server_result then
+                        return res:json({
+                            success = false,
+                            msg = "fail to add upstream and servers to nginx"
+                            })
+                    end
+                end
+                
                 res:json({
                     success = true,
                     msg = "succeed to create rule"
@@ -246,6 +258,19 @@ return function(plugin)
                         })
                     end
 
+                    -- 此时orange_db中的数据已经是最新的了
+                    if plugin == "upstream" then
+                        
+                        local update_nginx_server_result, rv = upstream.update_upstream(selector_id, "update")
+                        if not update_nginx_server_result then
+                            ngx.log(ngx.ERR, "update ngx upstream server: ", rv)
+                            return res:json({
+                                success = false,
+                                msg = "fail to add upstream and servers to nginx"
+                                })
+                        end
+                    end
+
                     return res:json({
                         success = success,
                         msg = success and "ok" or "failed"
@@ -258,7 +283,7 @@ return function(plugin)
                 })
             end
         end,
-
+        -- delete rules
         DELETE = function(store)
             return function(req, res, next)
                 local selector_id = req.params.id
@@ -332,6 +357,18 @@ return function(plugin)
                         success = false,
                         msg = "delete rule from db error"
                     })
+                end
+
+                -- 此时orange_db中的数据已经是最新的了
+                if plugin == "upstream" then
+                    local update_nginx_server_result, rv = upstream.update_upstream(selector_id, "update")
+                    if not update_nginx_server_result then
+                        ngx.log(ngx.ERR, "delete userver error : ", rv)
+                        return res:json({
+                            success = false,
+                            msg = "fail to add upstream and servers to nginx"
+                            })
+                    end
                 end
 
                 res:json({
@@ -491,6 +528,18 @@ return function(plugin)
                 local update_local_meta_result = dao.update_local_meta(plugin, store)
                 local update_local_selectors_result = dao.update_local_selectors(plugin, store)
                 if update_local_meta_result and update_local_selectors_result then
+
+                    if plugin == "upstream" then
+                        local status,rv = upstream.delete_upstream(to_del_selector)
+                        if not status then
+                            ngx.log(ngx.ERR, "delete upstream error ", to_del_selector.name, "ERROR: ", rv)
+                            return res:json({
+                                success = false,
+                                msg = "error to delete upstream from nginx"
+                                })
+                        end
+                    end
+                    -- set upstream
                     return res:json({
                         success = true,
                         msg = "succeed to delete selector"
@@ -539,6 +588,19 @@ return function(plugin)
                     local update_local_meta_result = dao.update_local_meta(plugin, store)
                     local update_local_selectors_result = dao.update_local_selectors(plugin, store)
                     if update_local_meta_result and update_local_selectors_result then
+
+                        -- created upstream in nginx 
+                        if plugin == "upstream" and type(selector) == "table" then
+                            local status, rv = upstream.add_upstream(selector, "new")
+                            if not status then
+                                ngx.log(ngx.ERR, " create upstream error ", rv)
+                                return res:json({
+                                    success = false,
+                                    msg = "create upstream error "
+                                    })
+                            end
+                        end
+
                         return res:json({
                             success = true,
                             msg = "succeed to create selector"
@@ -580,6 +642,18 @@ return function(plugin)
                         msg = "error to update selector"
                     })
                 end
+
+                -- 此时orange_db中的数据已经是最新的了
+                if plugin == "upstream" then
+                    local update_nginx_server_result, rv = upstream.update_upstream(selector.id, "update")
+                    if not update_nginx_server_result then
+                        ngx.log(ngx.ERR, "update ngx upstream server: ", rv)
+                        return res:json({
+                            success = false,
+                            msg = "fail to add upstream and servers to nginx"
+                            })
+                    end
+                end                
 
                 return res:json({
                     success = true,

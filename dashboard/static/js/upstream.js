@@ -16,6 +16,11 @@
 			_this.initEvents();
 		},
 		initEvents:function(){
+
+            $("#table-view h4").text("Upstream列表");
+            $("#rules-section-header").text("Server列表");
+            $("#add-btn span").text("添加新Server");
+
 			L.Common.initRuleAddDialog("upstream", _this);//添加规则对话框
             L.Common.initRuleDeleteDialog("upstream", _this);//删除规则对话框
             L.Common.initRuleEditDialog("upstream", _this);//编辑规则对话框

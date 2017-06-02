@@ -16,17 +16,24 @@
                 <div class="row content-header">
                     <div class="col-md-12">
                         <div class="pull-left">
-                            <h4 class="head_title">KV Store</h4>
+                            <h4 class="head_title">KVStore管理</h4>
                         </div>
-                        <div id="op-part" style="display:none;" class="pull-right">
-                            <a id="view-btn" data-type="table" class="btn btn-default" rel="nofollow" href="javascript:void(0);">
+                        <div class="pull-right">
+                            <a id="view-btn" style="display:none;" data-type="table" class="btn btn-default" rel="nofollow" href="javascript:void(0);">
                                 <i class="fa fa-database"></i>
                                 <span>数据视图</span>
                             </a>
-                            <a id="switch-btn" data-on="yes" class="btn btn-danger" rel="nofollow" href="javascript:void(0);">
+                            <a id="switch-btn" style="display:none;" data-on="yes" class="btn btn-danger" rel="nofollow" href="javascript:void(0);">
                                 <i class="fa fa-pause"></i>
                                 <span>停用该插件</span>
                             </a>
+
+                            <a class="btn btn-default" href="javascript:void(0);" id="add-selector-btn">
+                                <i class="fa fa-sitemap"></i>
+                                <span>添加DICT</span>
+                            </a>
+
+
                             <a class="btn btn-default" href="javascript:void(0);" id="sync-btn">
                                 <i class="fa fa-refresh"></i>
                                 <span>同步配置</span>
@@ -35,23 +42,155 @@
                     </div>
                 </div>
 
-                <div  id="table-view" class="row" style="margin-top:30px;">
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">说明</div>
-                            <div class="panel-body">
-                               <div class="panel-body">
-                                   <p>KV Store插件用于存取Shared Dict数据，暂时无更多个性化配置，请直接使用<b>API</b>操作即可。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 {(common/data-view-part.html)}
-                <!--  content end -->
+                {(common/right-selector-rule-part.html)}
+                
+                <!-- content end -->
             </div>
         </div><!--右侧部分结束-->
     </div>
+
+    <script id="rule-item-tpl" type="text/template">
+        {@each rules as r, index}
+        <li data-id="${r.id}" {@if r.enable==true } class="info-element"{@/if}
+            {@if r.enable!=true } class="warning-element"{@/if}>
+            <table class="table table-hover single-rule-table">
+                <tbody>
+                    <tr>
+                        <td class="center rule-enable-td">
+                            {@if r.enable==true }
+                                <span class="label label-primary">已启用</span>
+                            {@/if}
+                            {@if r.enable!=true }
+                                <span class="label label-warning">已禁用</span>
+                            {@/if}
+                        </td>
+
+                        <td class="rule-name-td" style="width:290px">
+                            <b class="namep" style="width: 100%">${r.key}</b>
+                        </td>
+                        
+                        <td class="left rule-name-td">
+                            <b class="namep">${r.value}</b>
+                        </td>
+                        <!--<td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>
+                        <td class="left rule-urltmpl-td">
+                            
+                        </td>-->
+
+                        <td class="left" title="变更时间">
+                            <small>${r.time}</small>
+                        </td>
+                        <td class="center rule-op-td">
+                            <a class="btn btn-white btn-sm edit-btn" data-id="${r.id}" data-name="${r.name}"><i title="编辑" class="fa fa-pencil"></i> </a>
+                            <a class="btn btn-white btn-sm delete-btn" data-id="${r.id}" data-name="${r.name}"><i title="删除" class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+        {@/each}
+    </script>
+
+    <script id="add-tpl" type="application/template">
+        <div id="rule-edit-area">
+            <form id="add-rule-form" class="form-horizontal">
+                <!--<div class="form-group">
+                    <label for="input-name" class="col-sm-2 control-label">名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="rule-name" placeholder="名称">
+                    </div>
+                </div> name -->
+
+                <!-- add - server编辑器模板 start -->
+                {(common/kv-add.html)}
+                <!-- add - server编辑器模板 end -->
+
+                <div class="form-group handle-holder">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="rule-handle-log">
+                            <option value="true">记录日志</option>
+                            <option value="false">不记录日志</option>
+                        </select>
+                    </div>
+                </div><!-- handle log-->
+
+                <!-- <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-11">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="rule-enable"> 启用
+                            </label>
+                        </div>
+                    </div>
+                </div> -->
+
+            </form>
+        </div>
+    </script>
+
+    <script id="edit-tpl" type="application/template">
+        <div id="rule-edit-area">
+            <form id="edit-rule-form" class="form-horizontal">
+                <!-- <div class="form-group">
+                    <label for="input-name" class="col-sm-2 control-label">名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="rule-name" value="${r.name}" placeholder="名称">
+                    </div>
+                </div> name -->
+
+                <!-- edit - 条件编辑器模板 start -->
+                {(common/kv-edit.html)}
+                <!-- edit - 条件编辑器模板 end -->
+
+                <div class="form-group handle-holder">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="rule-handle-log">
+                            <option value="true" {@if r.handle.log==true} selected {@/if}>记录日志</option>
+                            <option value="false" {@if r.handle.log==false} selected {@/if}>不记录日志</option>
+                        </select>
+                    </div>
+                </div><!-- handle log-->
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-11">
+                        <div class="checkbox">
+                            <label>
+                                <input {@if r.enable==true} checked {@/if} type="checkbox" id="rule-enable"> 启用
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </script>
+
+    {(common/selector-item-tpl.html)}
+    {(common/dict-add.html)}
+    {(common/dict-edit.html)}
 
     {(common/common_js.html)}<!-- 通用js -->
     <script src="/static/js/kvstore.js"></script>

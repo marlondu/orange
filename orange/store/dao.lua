@@ -378,6 +378,11 @@ function _M.init_selectors_of_plugin(plugin, store)
         end
 
         local success, err, forcible = orange_db.set_json(plugin .. ".selectors", to_update_selectors)
+
+        if plugin == "kvstore" then
+            ngx.log(ngx.INFO, "----kvstore---- ", orange_db.get("kvstore.selectors"))
+        end
+
         if err or not success then
             ngx.log(ngx.ERR, "init local plugin[" .. plugin .. "] selectors error, err:", err)
             return false
@@ -502,14 +507,15 @@ function _M.load_data_by_mysql(store, plugin)
 
         if v == "stat" then
             return
-        elseif v == "kvstore" then
-            local init_enable = _M.init_enable_of_plugin(v, store)
-            if not init_enable then
-                ngx.log(ngx.ERR, "load data of plugin[" .. v .. "] error, init_enable:", init_enable)
-                return false
-            else
-                ngx.log(ngx.ERR, "load data of plugin[" .. v .. "] success")
-            end
+        --elseif v == "kvstore" then
+        --    local init_enable = _M.init_enable_of_plugin(v, store)
+        --    if not init_enable then
+        --        ngx.log(ngx.ERR, "load data of plugin[" .. v .. "] error, init_enable:", init_enable)
+        --        return false
+        --    else
+        --        ngx.log(ngx.ERR, "load data of plugin[" .. v .. "] success")
+        --    end
+
         else -- ignore `stat` and `kvstore`
             local init_enable = _M.init_enable_of_plugin(v, store)
             local init_meta = _M.init_meta_of_plugin(v, store)

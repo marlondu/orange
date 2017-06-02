@@ -20,7 +20,6 @@ function UpstreamHandler:new(store)
 end
 
 function UpstreamHandler:access(conf)
-	
 	-- body
 end
 

@@ -9,11 +9,11 @@
             </div><!-- name -->
 
             <div class="form-group">
-                <label for="input-strategy" class="col-sm-1 control-label">策略</label>
+                <label for="input-desc" class="col-sm-1 control-label">说明</label>
                 <div class="col-sm-11">
-                    <input type="text" class="form-control" id="selector-strategy" placeholder="策略">
+                    <input type="text" class="form-control" id="selector-desc" placeholder="说明">
                 </div>
-            </div><!-- strategy-->
+            </div><!-- desc-->
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">处理</label>
@@ -26,12 +26,15 @@
             </div><!-- handle log-->
 
             <div class="form-group">
-                <div class="col-sm-offset-1 col-sm-11">
+                <!-- <div class="col-sm-offset-1 col-sm-11">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" id="selector-enable"> 启用
                         </label>
                     </div>
+                </div>-->
+                <div class="col-sm-offset-1 col-sm-11">
+                    <p><b>注意：</b>该操作并不能直接修改nginx中的共享内存字典，您仍需在 nginx.conf中手动添加。形如：<i>lua_shared_dict tokenUrl 10m;</i>&nbsp; 并且需要reload</p>
                 </div>
             </div>
         </form>

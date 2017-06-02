@@ -8,6 +8,7 @@ local utils = require("orange.utils.utils")
 local config_loader = require("orange.utils.config_loader")
 local dao = require("orange.store.dao")
 local upstream = require("dashboard.routes.upstream")
+local kvstore = require("dashboard.routes.kvstore")
 
 local HEADERS = {
     PROXY_LATENCY = "X-Orange-Proxy-Latency",
@@ -98,9 +99,12 @@ function Orange.init_worker()
                     if not load_success then
                         os.exit(1)
                     end
-                    if load_success and v == "upstream" then
-                        ngx.log(ngx.ERR, "-------init worker --------------------------------: ", v)
+                    if v == "upstream" then
                         upstream.init_upstreams()
+                    end
+                    if v == "kvstore" then
+                        ngx.log(ngx.ERR, "-----kvstore-------init ----------")
+                        kvstore.init_dicts()
                     end
                 end
             end, Orange.data.store, Orange.data.config)

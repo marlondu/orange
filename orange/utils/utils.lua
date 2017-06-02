@@ -142,7 +142,9 @@ function _M.table_contains(arr, val)
     end
     return false
 end
-
+-- check if a key exists in a table
+-- @param tb必须是table,并且是k,v形式
+-- @return 存在返回true, 参数错误，或不存在返回false
 function _M.table_contains_key(tb, key)
     if type(tb) == "table" then
         for k,v in ipairs(tb) do

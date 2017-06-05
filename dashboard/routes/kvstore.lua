@@ -1,6 +1,4 @@
 local orange_db = require "orange.store.orange_db"
-local dyups = require "ngx.dyups"
-local ngx_ups = require "ngx.upstream"
 local table_insert = table.insert
 local json = require("orange.utils.json")
 local dao = require("orange.store.dao")

@@ -144,12 +144,14 @@ API:post("/" .. plugin .. "/selectors/:id/rules",function(store) -- create
             end
 
             -- 此时orange_db中的数据已经是最新的了, 新建upstream
-            local update_nginx_server_result = kvstore.add_kv(current_selector, rule) --kvstore.init_kvs(current_selector)
-            if not update_nginx_server_result then
-                return res:json({
-                    success = false,
-                    msg = "fail to add dict and key-value to nginx"
-                    })
+            if rule.enable then
+                local update_nginx_server_result = kvstore.add_kv(current_selector, rule) --kvstore.init_kvs(current_selector)
+                if not update_nginx_server_result then
+                    return res:json({
+                        success = false,
+                        msg = "fail to add dict and key-value to nginx"
+                        })
+                end
             end
             
             res:json({

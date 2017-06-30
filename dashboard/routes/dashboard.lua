@@ -112,11 +112,13 @@ return function(config, store)
     end)
 
     dashboard_router:get("/monitor/rule/statistic", function(req, res, next)
-        local rule_id = req.query.rule_id;
-        local rule_name = req.query.rule_name or "";
+        local rule_id = req.query.rule_id
+        local rule_name = req.query.rule_name or ""
+        local rule_uri = req.query.rule_uri or ""
         res:render("monitor-rule-stat", {
             rule_id = rule_id,
-            rule_name = rule_name
+            rule_name = rule_name,
+            rule_uri = rule_uri
         })
     end)
 
@@ -164,6 +166,10 @@ return function(config, store)
     -- added 2017-05-19
     dashboard_router:get("/upstream", function(req, res, next)
         res:render("upstream")
+    end)
+    -- added 2017-06-06
+    dashboard_router:get("/interface", function(req, res, next)
+        res:render("interface")
     end)
 
     --- 加载其他"可用"插件API

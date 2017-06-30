@@ -16,7 +16,9 @@
                         <div class="pull-left">
                             <h4 class="head_title">自定义监控</h4>
                         </div>
-
+                        <div class="pull-left col-sm-offset-1">
+                            <h4 class="head_title">{{rule_name}}:&nbsp;{{rule_uri}}</h4>
+                        </div>
                         <div class="pull-right" id="time-set">
                             <span class="l">时间间隔:</span>
                             <a href="javascript:void(0);" class="timer_interval" data-interval="1000">1s</a> /
@@ -51,6 +53,8 @@
     </div>
 
     <input type="hidden" id="rule-id-input" value="{{rule_id}}"/>
+    <input type="hidden" name="rule-name-input" value="{{rule_name}}">
+    <input type="hidden" name="rule-uri-input" value="{{rule_uri}}">
     {(common/common_js.html)}<!-- 通用js -->
     <script src="/static/js/echarts3/echarts.common.min.js"></script>
     <script src="/static/js/monitor_stat.js"></script>

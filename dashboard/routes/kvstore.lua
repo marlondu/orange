@@ -44,7 +44,7 @@ function _M.init_kvs(dict)
 				else
 					local ngx_shared_dict = ngx.shared[dict.name]
 					if not ngx_shared_dict then
-						ngx.log(ngx.ERR, "ngx.shared. " .. dict.name .. " is not exist")
+						ngx.log(ngx.ERR, "ngx.shared." .. dict.name .. " is not exist")
 					else
 						local success, err, forcible = ngx_shared_dict:set(key, value)
 						if not success then

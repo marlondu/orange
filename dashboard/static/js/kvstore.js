@@ -46,10 +46,14 @@
             $("#table-view h4").text("DICT列表");
             $("#rules-section-header").text("DICT-KV列表");
             $("#add-btn span").text("添加新Key-Value");
+            $("#searcher").show();
         },
 
         initEvents: function(){
             var op_type = "kvstore";
+
+            L.Common.initKeywordChangeEvent(op_type, _this);
+
             L.Common.initViewAndDownloadEvent(op_type, _this);
             L.Common.initSwitchBtn(op_type, _this);//redirect关闭、开启
             L.Common.initSyncDialog(op_type, _this);//编辑规则对话框

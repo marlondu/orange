@@ -1420,7 +1420,77 @@
                 }
             });
         },
+        initKeywordChangeEvent: function(type, context){
+            var op_type = type;
+            $("#keyword").keyup(function(){
+                var keyword = $(this).val();
+                var words = [];
+                var keywords = keyword.split(/[\s]+/i);
+                var len = keywords.length;
+                for(var i = 0;i < len;i++){
+                    if(keywords[i]){
+                        words.push(keywords[i])
+                    }
+                }
+                var selector_id = $("#add-btn").attr("data-id");
+                _this.loadRulesWithKeywords(op_type, context, selector_id, words);
+            });
+        },
+        loadRulesWithKeywords: function (type, context, selector_id, words) {
+            var op_type = type;
+            $.ajax({
+                url: '/' + op_type + '/selectors/' + selector_id + "/rules",
+                type: 'get',
+                cache: false,
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    if (result.success) {
+                        $("#switch-btn").show();
+                        $("#view-btn").show();
 
+                        var total_rules = result.data.rules;
+                        var filtered_rules = [];
+                        if(words){
+                            for(i in total_rules){
+                                var uri;
+                                if(type == "interface"){
+                                    uri = total_rules[i].uri;
+                                }else if(type == "kvstore"){
+                                    uri = total_rules[i].key;
+                                }else{
+                                    alert("暂不支持【"+ type +"】, 请在此添加支持");
+                                    break;
+                                }
+                                
+                                var flag = true;
+                                for(j in words){
+                                    if(uri.indexOf(words[j]) == -1){
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                                if(flag){
+                                    filtered_rules.push(total_rules[i]);
+                                }
+                            }
+                            //if(filtered_rules.length > 0){
+                                result.data.rules = filtered_rules;
+                            //}
+                        }
+                        //重新设置数据
+                        context.data.selector_rules = context.data.selector_rules || {};
+                        context.data.selector_rules[selector_id] = result.data.rules;
+                        _this.renderRules(result.data);
+                    } else {
+                        _this.showErrorTip("错误提示", "查询" + op_type + "规则发生错误");
+                    }
+                },
+                error: function () {
+                    _this.showErrorTip("提示", "查询" + op_type + "规则发生异常");
+                }
+            });
+        },
         emptyRules: function(){
             $("#rules-section-header").text("选择器-规则列表");
             $("#rules").html("");

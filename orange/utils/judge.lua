@@ -142,4 +142,31 @@ function _M.judge_rule(rule, plugin_name)
 end
 
 
+function _M.equals_rule(rule, plugin_name)
+    local pass = false
+    local rule_uri = rule.uri
+    local uri = ngx.var.uri
+    if string.sub(rule_uri, 1, 1) ~= "/" then
+        rule_uri = "/" .. rule_uri
+    end
+    rule_uri = string_gsub(rule_uri, "?", "")
+    uri = string_gsub(uri,"?","")
+    local rule_uri_len = string.len(rule_uri)
+    if string.sub(rule_uri,rule_uri_len, rule_uri_len) == "/" then
+        rule_uri = string.sub(rule_uri,1, rule_uri_len - 1)
+    end
+    local uri_len = string.len(uri)
+    if string.sub(uri, uri_len, uri_len) == "/" then
+        uri = string.sub(uri, 1, uri_len - 1)
+    end
+    if uri == rule_uri then
+        pass = true
+    else
+        pass = false
+    end
+    ngx.log(ngx.INFO, "[Interface][rule_uri] ", rule_uri, " [uri] ", uri, " [pass] ", pass)
+    return pass
+end
+
+
 return _M

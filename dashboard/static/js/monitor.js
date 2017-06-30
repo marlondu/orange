@@ -89,10 +89,11 @@
                 var self = $(this);
                 var rule_id = self.attr("data-id");
                 var rule_name = self.attr("data-name");
+                var rule_uri = self.attr("data-uri");
                 if(!rule_id){
                     return;
                 }
-                window.location.href = "/monitor/rule/statistic?rule_id="+rule_id+"&rule_name="+encodeURI(rule_name);
+                window.location.href = "/monitor/rule/statistic?rule_id="+rule_id+"&rule_name="+encodeURI(rule_name)+"&rule_uri=" + encodeURI(rule_uri);
             });
 
         }

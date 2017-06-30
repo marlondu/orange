@@ -1,0 +1,65 @@
+<div id="judge-area">
+	<div class="form-group">
+		<label for="input-uri" class="col-sm-1 control-label">URI</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="rule-uri" placeholder="URI">
+        </div>
+	</div>
+	<!-- 负责人信息-->
+	<div class="form-group pair condition-holder">
+        <label class="col-sm-1 control-label" style="padding-left: 10px;padding-right: 10px;">负责人</label>
+
+        <div class="col-sm-2">
+            <input type="text" name="rule-user-name" class="form-control" placeholder="姓名">
+        </div>
+        <div class="col-sm-4 condition-name-hodler" style="padding-left:0px;">
+            <input type="text" class="form-control" name="rule-user-email" placeholder="邮箱">
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="rule-user-phone" placeholder="手机">
+        </div>
+        <div class="col-sm-1" style="margin-top:5px">
+            <span class="input-group-btn">
+                <a class="btn btn-remove" style="padding:0 5px;">
+                    <i class="fa fa-remove"></i>
+                </a>
+                <a class="btn btn-add" style="padding:0 5px;">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </span>
+        </div>
+    </div>
+
+	<div class="form-group">
+		<label for="input-desc" class="col-sm-1 control-label">说明</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="rule-desc" placeholder="说明">
+        </div>
+	</div>
+	<!--是否监控此接口-->
+	<div class="form-group">
+        <div class="col-sm-offset-1 col-sm-11">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="rule-monitor"> 启用监控
+                </label>
+            </div>
+        </div>
+    </div>
+    <!--是否监控此接口-->
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-11">
+            <div class="checkbox" style="float: left;">
+                <label>
+                    <input type="checkbox" id="rule-limit"> 启用限流
+                </label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled name="rule-limit-times" id="rule-limit-times" placeholder="limit-times">
+            </div>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled name="rule-burst-times" id="rule-burst-times" placeholder="burst-times">
+            </div>
+        </div>
+    </div>
+</div>

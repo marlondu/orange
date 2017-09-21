@@ -81,7 +81,7 @@ function _M.incoming(uri, rule)
 		-- 使用uri作为Key
 		local key = uri
 		local delay, err = lim:incoming(key, true)
-		ngx.log(ngx.INFO,"-------delay :", delay, " ----------")
+		ngx.log(ngx.INFO,"-------delay :", delay, " -----err: ", err , " -----")
         if not delay then
             if err == "rejected" then
                 return ngx.exit(503)
